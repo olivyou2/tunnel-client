@@ -66,7 +66,7 @@ func main() {
 				return nil
 			}
 
-			tunneling()
+			tunneling(hostPort)
 			return nil
 		},
 	}).Run(os.Args)

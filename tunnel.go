@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"net"
+	"os"
 )
 
 func getTunnelHost() string {
@@ -20,7 +21,7 @@ func logging(level int, a ...any) {
 	}
 }
 
-func tunneling() {
+func tunneling(port string) {
 	conn, err := net.Dial("tcp", getTunnelHost())
 
 	if nil != err {
@@ -32,6 +33,7 @@ func tunneling() {
 	handshakeWriter.writeString("manager")
 	handshakeWriter.writeString("manager-sess-" + createUuid())
 	handshakeWriter.writeString(alias)
+	handshakeWriter.writeString(port)
 	write(conn, handshakeWriter.getBytes())
 
 	recv(conn)
@@ -126,6 +128,11 @@ func packetProc(buffer []byte) {
 		host := br.readString()
 
 		fmt.Println("Tunnel open at", host)
+	} else if msgType == "listenFailed" {
+		host := br.readString()
+
+		fmt.Println("Failed to open tunnel at", host)
+		os.Exit(0)
 	}
 }
 
