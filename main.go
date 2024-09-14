@@ -43,6 +43,12 @@ func main() {
 				Usage:       "Use verbal",
 				Destination: &verbal,
 			},
+			&cli.StringFlag{
+				Name:        "hostPort",
+				Value:       hostPort,
+				Usage:       "Hosting port that you want to host",
+				Destination: &hostPort,
+			},
 		},
 		Usage: "a tcp tunnel fits perfectly with you",
 		Action: func(context *cli.Context) error {
